@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base import Base
 
+
 class Event(Base):
     __tablename__ = 'events'
 

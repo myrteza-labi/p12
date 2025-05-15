@@ -1,0 +1,18 @@
+# .flake8
+
+[flake8]
+# Dossiers/fichiers à exclure (séparés par des virgules, sans espaces)
+exclude =
+    .git,           ; dossier Git
+    __pycache__,    ; caches Python
+    venv,           ; ton environnement virtuel
+    database,       ; fichier SQLite / engine si tu veux
+    scripts,        ; tous tes scripts de tests manuels
+    docs,           ; documentation (PlantUML, PNG…)
+    tests           ; si tu ne veux pas lint tes tests
+
+# (optionnel) Ajuste la longueur max de ligne si souhaité
+max-line-length = 88
+
+# (optionnel) ignore des codes d’erreur précis
+# ignore = E203, W503

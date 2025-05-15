@@ -4,13 +4,13 @@ import os
 
 load_dotenv()  # lit .env à la racine
 
-# URL de connexion à la BDD  
+# URL de connexion à la BDD
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/epicevents.db")
 
-# Clé secrète pour JWT  
+# Clé secrète pour JWT
 SECRET_KEY = os.getenv("SECRET_KEY", "change_me")
 
-# DSN pour Sentry  
+# DSN pour Sentry
 SENTRY_DSN = os.getenv("SENTRY_DSN", None)
 
 # Options spécifiques à SQLAlchemy (SQLite)

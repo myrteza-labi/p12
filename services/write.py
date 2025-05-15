@@ -1,4 +1,3 @@
-import sys, os
 from sqlalchemy.orm import Session
 from services.token import decode_token, has_permission
 from models.user import User
@@ -12,8 +11,17 @@ from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 # ▶ Créer un utilisateur
-def create_user(db: Session, token: str, name: str, email: str, password: str, role_name: str):
+
+def create_user(
+    db: Session,
+    token: str,
+    name: str,
+    email: str,
+    password: str,
+    role_name: str,
+):
     if not has_permission(token, "create_user"):
         print("❌ Permission refusée : create_user")
         return
@@ -32,10 +40,15 @@ def create_user(db: Session, token: str, name: str, email: str, password: str, r
     print(f"✅ Collaborateur '{name}' ajouté avec succès.")
     sentry_sdk.capture_message(f"Utilisateur {email} créé")
 
+
 # ▶ Créer un client
+
 def create_client(db: Session, token: str, full_name: str, email: str):
     # Vérification des permissions
-    if not has_permission(token, "create_client") and not has_permission(token, "view_all"):
+    if (
+        not has_permission(token, "create_client")
+        and not has_permission(token, "view_all")
+    ):
         print("❌ Permission refusée : create_client")
         return
 
@@ -70,7 +83,16 @@ def create_client(db: Session, token: str, full_name: str, email: str):
 
 
 # ▶ Créer un contrat
-def create_contract(db: Session, token: str, client_email: str, commercial_email: str, total_amount: float, amount_due: float, is_signed: bool):
+
+def create_contract(
+    db: Session,
+    token: str,
+    client_email: str,
+    commercial_email: str,
+    total_amount: float,
+    amount_due: float,
+    is_signed: bool
+):
     if not has_permission(token, "create_contract"):
         print("❌ Permission refusée : create_contract")
         return
@@ -95,7 +117,9 @@ def create_contract(db: Session, token: str, client_email: str, commercial_email
     print(f"✅ Contrat pour '{client.full_name}' créé avec succès.")
     sentry_sdk.capture_message(f"Contrat pour {client_email} créé")
 
+
 # ▶ Créer un événement
+
 def create_event(
     db: Session,
     token: str,
@@ -150,8 +174,17 @@ def create_event(
     print(f"✅ Événement pour '{client.full_name}' créé avec succès.")
     sentry_sdk.capture_message(f"Événement pour {client_email} créé")
 
+
 # Mettre à jour un collaborateur
-def update_user(db: Session, token: str, user_id: int, name: str = None, email: str = None, role_name: str = None):
+
+def update_user(
+    db: Session,
+    token: str,
+    user_id: int,
+    name: str = None,
+    email: str = None,
+    role_name: str = None
+):
     if not has_permission(token, 'update_user'):
         print("❌ Permission refusée : update_user")
         return
@@ -173,7 +206,9 @@ def update_user(db: Session, token: str, user_id: int, name: str = None, email: 
     print(f"✅ Utilisateur ID {user_id} mis à jour.")
     sentry_sdk.capture_message(f"Utilisateur {user_id} mis à jour")
 
+
 # Supprimer un collaborateur
+
 def delete_user(db: Session, token: str, user_id: int):
     if not has_permission(token, 'delete_user'):
         print("❌ Permission refusée : delete_user")
@@ -187,8 +222,17 @@ def delete_user(db: Session, token: str, user_id: int):
     print(f"✅ Utilisateur ID {user_id} supprimé.")
     sentry_sdk.capture_message(f"Utilisateur {user_id} supprimé")
 
+
 # Mettre à jour un client
-def update_client(db: Session, token: str, client_id: int, full_name: str = None, email: str = None, phone: str = None):
+
+def update_client(
+    db: Session,
+    token: str,
+    client_id: int,
+    full_name: str = None,
+    email: str = None,
+    phone: str = None
+):
     if not has_permission(token, 'update_client'):
         print("❌ Permission refusée : update_client")
         return
@@ -207,7 +251,9 @@ def update_client(db: Session, token: str, client_id: int, full_name: str = None
     print(f"✅ Client ID {client_id} mis à jour.")
     sentry_sdk.capture_message(f"Client {client_id} mis à jour")
 
+
 # Supprimer un client
+
 def delete_client(db: Session, token: str, client_id: int):
     if not has_permission(token, 'delete_client'):
         print("❌ Permission refusée : delete_client")
@@ -221,8 +267,17 @@ def delete_client(db: Session, token: str, client_id: int):
     print(f"✅ Client ID {client_id} supprimé.")
     sentry_sdk.capture_message(f"Client {client_id} supprimé")
 
+
 # Mettre à jour un contrat
-def update_contract(db: Session, token: str, contract_id: int, total_amount: float = None, amount_due: float = None, is_signed: bool = None):
+
+def update_contract(
+    db: Session,
+    token: str,
+    contract_id: int,
+    total_amount: float = None,
+    amount_due: float = None,
+    is_signed: bool = None
+):
     if not has_permission(token, 'update_contract'):
         print("❌ Permission refusée : update_contract")
         return
@@ -240,7 +295,9 @@ def update_contract(db: Session, token: str, contract_id: int, total_amount: flo
     print(f"✅ Contrat ID {contract_id} mis à jour.")
     sentry_sdk.capture_message(f"Contrat {contract_id} mis à jour")
 
+
 # Supprimer un contrat
+
 def delete_contract(db: Session, token: str, contract_id: int):
     if not has_permission(token, 'delete_contract'):
         print("❌ Permission refusée : delete_contract")
@@ -254,8 +311,19 @@ def delete_contract(db: Session, token: str, contract_id: int):
     print(f"✅ Contrat ID {contract_id} supprimé.")
     sentry_sdk.capture_message(f"Contrat {contract_id} supprimé")
 
+
 # Mettre à jour un événement
-def update_event(db: Session, token: str, event_id: int, support_email: str = None, start_date: str = None, end_date: str = None, location: str = None, attendees: int = None, notes: str = None):
+
+def update_event(
+    db: Session,
+    token: str, event_id: int,
+    support_email: str = None,
+    start_date: str = None,
+    end_date: str = None,
+    location: str = None,
+    attendees: int = None,
+    notes: str = None
+):
     if not has_permission(token, 'update_event'):
         print("❌ Permission refusée : update_event")
         return
@@ -283,7 +351,9 @@ def update_event(db: Session, token: str, event_id: int, support_email: str = No
     print(f"✅ Événement ID {event_id} mis à jour.")
     sentry_sdk.capture_message(f"Événement {event_id} mis à jour")
 
+
 # Supprimer un événement
+
 def delete_event(db: Session, token: str, event_id: int):
     if not has_permission(token, 'delete_event'):
         print("❌ Permission refusée : delete_event")

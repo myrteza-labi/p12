@@ -41,13 +41,17 @@ permissions = {
     ]
 }
 
+
 # Création d'un jeton JWT
+
 def create_token(user_id: int, role_name: str) -> str:
     expiration = datetime.utcnow() + timedelta(minutes=TOKEN_EXPIRATION_MINUTES)
     payload = {"user_id": user_id, "role": role_name, "exp": expiration}
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
+
 # Décodage du jeton JWT
+
 def decode_token(token: str):
     try:
         return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -57,7 +61,9 @@ def decode_token(token: str):
         print("❌ Jeton invalide.")
     return None
 
+
 # Lecture du jeton JWT depuis le fichier local
+
 def load_token(path: str = ".token") -> str | None:
     try:
         with open(path, "r") as f:
@@ -66,7 +72,9 @@ def load_token(path: str = ".token") -> str | None:
         print("❌ Jeton introuvable.")
         return None
 
+
 # Vérification d'autorisation
+
 def has_permission(token: str, action: str) -> bool:
     data = decode_token(token)
     if not data:

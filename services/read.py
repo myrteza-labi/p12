@@ -6,6 +6,7 @@ from models.client import Client
 from models.contract import Contract
 from models.event import Event
 
+
 def load_token(path=".token"):
     try:
         with open(path, "r") as f:
@@ -13,6 +14,7 @@ def load_token(path=".token"):
     except FileNotFoundError:
         print("❌ Jeton introuvable.")
         return None
+
 
 def get_all_clients(db: Session, token: str):
     """Récupère tous les clients (lecture seule, tous les rôles)."""
@@ -23,6 +25,7 @@ def get_all_clients(db: Session, token: str):
         print("❌ Erreur lors de la récupération des clients.")
         return []
 
+
 def get_all_contracts(db: Session, token: str):
     """Récupère tous les contrats (lecture seule, tous les rôles)."""
     try:
@@ -31,6 +34,7 @@ def get_all_contracts(db: Session, token: str):
         sentry_sdk.capture_exception(e)
         print("❌ Erreur lors de la récupération des contrats.")
         return []
+
 
 def get_all_events(db: Session, token: str):
     """Récupère tous les événements (lecture seule, tous les rôles)."""

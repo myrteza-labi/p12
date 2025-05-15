@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base import Base
 
+
 class Client(Base):
     __tablename__ = 'clients'
 
