@@ -1,0 +1,56 @@
+@startuml EpicEventsCRM
+
+entity "users" as U {
+  * id : INTEGER <<PK>>
+  * name : STRING
+  * email : STRING
+  * password : STRING
+  * role_id : INTEGER <<FK>>
+}
+
+entity "roles" as R {
+  * id : INTEGER <<PK>>
+  * name : STRING
+}
+
+entity "clients" as C {
+  * id : INTEGER <<PK>>
+  * full_name : STRING
+  * email : STRING
+  * phone : STRING
+  * company_name : STRING
+  * created_date : DATE
+  * last_contact_date : DATE
+  * commercial_id : INTEGER <<FK>>
+}
+
+entity "contracts" as K {
+  * id : INTEGER <<PK>>
+  * total_amount : FLOAT
+  * amount_due : FLOAT
+  * created_date : DATE
+  * is_signed : BOOLEAN
+  * client_id : INTEGER <<FK>>
+  * commercial_id : INTEGER <<FK>>
+}
+
+entity "events" as E {
+  * id : INTEGER <<PK>>
+  * start_date : DATETIME
+  * end_date : DATETIME
+  * location : STRING
+  * attendees : INTEGER
+  * notes : STRING
+  * contract_id : INTEGER <<FK>>
+  * client_id : INTEGER <<FK>>
+  * support_id : INTEGER <<FK>>
+}
+
+U ||--o{ C : "gère"
+U ||--o{ K : "crée"
+U ||--o{ E : "assure"
+R ||--o{ U : "attribue"
+C ||--o{ K : "possède"
+K ||--o{ E : "concerne"
+
+@enduml
